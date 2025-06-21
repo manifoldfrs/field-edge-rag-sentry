@@ -1,0 +1,27 @@
+# field‑edge‑rag‑sentry Python dependencies
+
+# ——— Core LLM / RAG stack ———
+llama-cpp-python>=0.2.16        # Metal‑accelerated llama.cpp bindings
+sentence-transformers>=2.4.0    # MiniLM embeddings
+faiss-cpu>=1.7.4                # Vector search (ARM wheel)
+torch>=2.2.2                    # MPS backend wheels ship on PyPI
+transformers>=4.41.0            # LoRA / generation interface
+peft>=0.10.0                    # Parameter‑efficient fine‑tuning
+accelerate>=0.28.0              # Device‑agnostic training helpers
+
+# ——— Evaluation ———
+ragas>=0.1.2                    # RAG metrics (faithfulness, precision)
+datasets>=2.18.0                # Data pipelines for eval sets
+
+# ——— Vision ———
+opencv-python>=4.10.0.0         # AVFoundation capture
+ultralytics>=8.1.34             # YOLO‑v5s + export utilities
+coremltools>=7.1                # Convert PyTorch → CoreML
+
+# ——— Infrastructure ———
+pyzmq>=26.0.0                   # ZeroMQ PUB/SUB
+psutil>=5.9.8                   # RAM / CPU stats
+tqdm>=4.66.4                    # Progress bars
+
+# ——— Testing / linting ———
+pytest>=8.2.0                   # Unit tests (+ Ragas harness)
