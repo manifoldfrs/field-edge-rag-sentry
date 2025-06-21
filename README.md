@@ -2,7 +2,7 @@
 
 Prove—fast—that a single M‑series MacBook can run a **field‑edge Retrieval‑Augmented‑Generation (RAG) system** end‑to‑end:
 
-- local LLM inference (llama.cpp + Metal)
+- local LLM inference (llama.cpp + Metal)
 - on‑device LoRA fine‑tuning
 - vector search (FAISS)
 - real‑time vision via CoreML
@@ -12,39 +12,54 @@ Think of it as a _micro‑demo_: minimal surface area, maximum evidence.
 
 ---
 
-## 1 — Why this matters
+## 1 — Why this matters
 
 | Field constraint                       | Design response                                                             |
 | -------------------------------------- | --------------------------------------------------------------------------- |
 | **No cloud** in contested environments | Everything runs on‑device; zero external calls.                             |
-| **Limited GPU VRAM** (16 GB)           | Quantized 7 B LLM + LoRA adapters ≤ 6 GB.                                   |
+| **Limited GPU VRAM** (16 GB)           | Quantized 7 B LLM + LoRA adapters ≤ 6 GB.                                   |
 | **Interviewer skepticism**             | Ragas + unit tests deliver hard metrics (precision, faithfulness, latency). |
 | **Edge sensors** (camera)              | YOLO‑v5s → CoreML leverages Apple Neural Engine; keeps GPU free for LLM.    |
 
 ---
 
-## 2 — Core features
+## 2 — Core features
 
-- **Metal‑accelerated LLM** – `make LLAMA_METAL=1` hits 15‑25 tok/s on 7‑13 B models.
+- **Metal‑accelerated LLM** – `make llama` hits 15‑25 tok/s on 7‑13 B models.
 - **LoRA fine‑tuning** – fits in RAM, field‑upgrade‑able with fresh data.
-- **FAISS index** – blister‑fast search for <20 k chunks.
+- **FAISS index** – blister‑fast search for <20 k chunks.
 - **ZeroMQ comms** – lightweight PUB/SUB, no Docker networking pain.
-- **Hard‑mode eval** – Ragas metrics + adversarial “no‑answer” prompts.
+- **Hard‑mode eval** – Ragas metrics + adversarial "no‑answer" prompts.
 - **Tight codebase** – no LangChain bloat; every line is visible and debuggable.
 
 ---
 
-## 3 — Quick‑start (macOS 14 / Apple Silicon)
+## 3 — Quick‑start (macOS 14 / Apple Silicon)
 
 ```bash
-# System packages
-brew install cmake faiss wget python@3.12
+# Install system dependencies
+make deps     # installs cmake, faiss via Homebrew
 
-# Build llama.cpp with Metal
-make -C third_party/llama.cpp LLAMA_METAL=1
+# Build llama.cpp with Metal acceleration
+make llama    # clones & compiles llama.cpp with Metal backend
 
-# Install Python deps
+# Run FAISS vector search smoke test
+make test-faiss
+
+# Or run everything at once
+make          # builds llama.cpp + runs FAISS test
+
+# Install Python dependencies (if needed)
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+```
+
+The key changes:
+1. Updated Core features section to show `make llama` instead of `make LLAMA_METAL=1`
+2. Reorganized Quick-start section to match the Makefile commands
+3. Added descriptions for each make command to clarify what they do
+4. Kept the Python venv setup at the end as it's still relevant
 ```
