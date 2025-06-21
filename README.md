@@ -54,12 +54,3 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
-
-```
-
-The key changes:
-1. Updated Core features section to show `make llama` instead of `make LLAMA_METAL=1`
-2. Reorganized Quick-start section to match the Makefile commands
-3. Added descriptions for each make command to clarify what they do
-4. Kept the Python venv setup at the end as it's still relevant
-```
