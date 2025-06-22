@@ -1,16 +1,17 @@
 # field‑edge‑rag‑sentry — Build & test helpers
 # Usage:
-#   make            # build llama.cpp + run FAISS smoke test
+#   make            # build llama.cpp + FAISS + CoreML vision smoke demo
 #   make deps       # install Homebrew prereqs
 #   make llama      # clone & compile llama.cpp with Metal
-#   make test-faiss # run 10‑line FAISS retrieval demo
+#   make test-faiss # run 2 k‑vector FAISS retrieval demo
+#   make vision     # run realtime YOLO‑v5s CoreML webcam demo
 #   make clean      # clean llama.cpp artifacts
 
 BREW_PKGS = cmake faiss
 
-.PHONY: all deps llama test-faiss clean
+.PHONY: all deps llama test-faiss vision clean
 
-all: llama test-faiss
+all: llama test-faiss vision
 
 deps:
 	brew install $(BREW_PKGS)
@@ -33,6 +34,12 @@ llama: deps
 # ---------------------------------------------------------------------------
 test-faiss: deps scripts/faiss_smoke.py
 	python scripts/faiss_smoke.py
+
+# ---------------------------------------------------------------------------
+# Realtime YOLO‑v5s CoreML webcam demo (≥15 FPS)
+# ---------------------------------------------------------------------------
+vision: deps scripts/vision_demo.py
+	python scripts/vision_demo.py
 
 clean:
 	@if [ -d third_party/llama.cpp/build ]; then rm -rf third_party/llama.cpp/build; fi
