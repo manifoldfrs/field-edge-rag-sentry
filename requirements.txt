@@ -23,5 +23,8 @@ pyzmq>=26.0.0                   # ZeroMQ PUB/SUB
 psutil>=5.9.8                   # RAM / CPU stats
 tqdm>=4.66.4                    # Progress bars
 
+# ——— Document parsing ———
+PyPDF2>=3.0.1                   # PDF text extraction
+
 # ——— Testing / linting ———
 pytest>=8.2.0                   # Unit tests (+ Ragas harness)

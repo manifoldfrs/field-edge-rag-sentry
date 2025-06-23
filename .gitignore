@@ -201,4 +201,6 @@ third_party/
 error_logs/
 .repo_ignore
 models/
+other/
 yolo*
+TODO.md

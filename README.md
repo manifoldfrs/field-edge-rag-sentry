@@ -54,3 +54,18 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## 4 — Testing the RAG system
+
+```bash
+# Build the FAISS index from PDF documents in docs/
+make index
+
+# Test the retriever with sample queries
+python -m tests.test_retriever  # runs sample queries against the index
+
+# Run all tests
+make test     # runs all tests in the tests/ directory
+```
+
+To add your own PDF documents for indexing, place them in the `docs/` directory and run `make index` again.

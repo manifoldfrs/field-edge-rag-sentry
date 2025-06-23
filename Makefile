@@ -1,23 +1,24 @@
-# field‑edge‑rag‑sentry — Build & test helpers
+# field‑edge‑rag‑sentry — Build & test helpers
 # Usage:
 #   make            # build llama.cpp + FAISS + CoreML vision smoke demo
 #   make deps       # install Homebrew prereqs
 #   make llama      # clone & compile llama.cpp with Metal
-#   make test-faiss # run 2 k‑vector FAISS retrieval demo
+#   make test-faiss # run 2 k‑vector FAISS retrieval demo
 #   make vision     # run realtime YOLO‑v5s CoreML webcam demo
+#   make test       # run all tests in the tests directory
 #   make clean      # clean llama.cpp artifacts
 
-BREW_PKGS = cmake faiss
+BREW_PKGS = cmake faiss libomp
 
-.PHONY: all deps llama test-faiss vision clean
+.PHONY: all deps llama test-faiss vision index clean test
 
-all: llama test-faiss vision
+all: llama index test-faiss vision
 
 deps:
 	brew install $(BREW_PKGS)
 
 # ---------------------------------------------------------------------------
-# Build llama.cpp with Metal backend (≈15‑25 tok/s on M‑series GPU)
+# Build llama.cpp with Metal backend (≈15‑25 tok/s on M‑series GPU)
 # ---------------------------------------------------------------------------
 llama: deps
 	mkdir -p third_party
@@ -30,16 +31,28 @@ llama: deps
 	cmake --build . --config Release
 
 # ---------------------------------------------------------------------------
-# FAISS smoke test — index 2 k random vectors & query nearest neighbours
+# FAISS smoke test — index 2 k random vectors & query nearest neighbours
 # ---------------------------------------------------------------------------
 test-faiss: deps src/faiss_smoke.py
 	python src/faiss_smoke.py
 
 # ---------------------------------------------------------------------------
-# Realtime YOLO‑v5s CoreML webcam demo (≥15 FPS)
+# Realtime YOLO‑v5s CoreML webcam demo (≥15 FPS)
 # ---------------------------------------------------------------------------
 vision: deps src/vision_demo.py
 	python src/vision_demo.py
+
+# ---------------------------------------------------------------------------
+# Build FAISS index from doctrine PDFs
+# ---------------------------------------------------------------------------
+index: deps src/build_index.py
+	python src/build_index.py
+
+# ---------------------------------------------------------------------------
+# Run all tests in the tests directory
+# ---------------------------------------------------------------------------
+test:
+	python -m pytest tests/
 
 clean:
 	@if [ -d third_party/llama.cpp/build ]; then rm -rf third_party/llama.cpp/build; fi
