@@ -32,14 +32,14 @@ llama: deps
 # ---------------------------------------------------------------------------
 # FAISS smoke test — index 2 k random vectors & query nearest neighbours
 # ---------------------------------------------------------------------------
-test-faiss: deps scripts/faiss_smoke.py
-	python scripts/faiss_smoke.py
+test-faiss: deps src/faiss_smoke.py
+	python src/faiss_smoke.py
 
 # ---------------------------------------------------------------------------
 # Realtime YOLO‑v5s CoreML webcam demo (≥15 FPS)
 # ---------------------------------------------------------------------------
-vision: deps scripts/vision_demo.py
-	python scripts/vision_demo.py
+vision: deps src/vision_demo.py
+	python src/vision_demo.py
 
 clean:
 	@if [ -d third_party/llama.cpp/build ]; then rm -rf third_party/llama.cpp/build; fi

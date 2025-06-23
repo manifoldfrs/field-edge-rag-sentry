@@ -9,7 +9,6 @@ Requirements:
     * coremltools >= 7.1      (automatically used by ultralytics)
     * opencv-python >= 4.10
 Tested on macOS 14.5, M-series GPU. Achieves ~18-25 FPS on an M1 Pro.
-Press "q" to quit.
 """
 
 from __future__ import annotations
@@ -22,7 +21,7 @@ from pathlib import Path
 from ultralytics import YOLO
 
 MODELS_DIR = Path("models")
-COREML_PKG = MODELS_DIR / "yolov5s_coreml.mlpackage"  # directory bundle
+COREML_PKG = MODELS_DIR / "yolov5s_coreml.mlpackage"
 
 
 def export_if_missing() -> Path:
@@ -35,7 +34,7 @@ def export_if_missing() -> Path:
     yolov5s = YOLO("yolov5s.pt")  # downloads weights on first call
     exported = yolov5s.export(format="coreml", imgsz=640, device="cpu")
 
-    # `export()` may return Path or list; normalise
+    # `export()` may return Path or list; normalize
     exported_path = Path(
         exported[0] if isinstance(exported, (list, tuple)) else exported
     )
