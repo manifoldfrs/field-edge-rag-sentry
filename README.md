@@ -18,7 +18,7 @@ Think of it as a _micro‑demo_: minimal surface area, maximum evidence.
 | -------------------------------------- | --------------------------------------------------------------------------- |
 | **No cloud** in contested environments | Everything runs on‑device; zero external calls.                             |
 | **Limited GPU VRAM** (16 GB)           | Quantized 7 B LLM + LoRA adapters ≤ 6 GB.                                   |
-| **Interviewer skepticism**             | Ragas + unit tests deliver hard metrics (precision, faithfulness, latency). |
+| **Easing skepticism**                  | Ragas + unit tests deliver hard metrics (precision, faithfulness, latency). |
 | **Edge sensors** (camera)              | YOLO‑v5s → CoreML leverages Apple Neural Engine; keeps GPU free for LLM.    |
 
 ---
