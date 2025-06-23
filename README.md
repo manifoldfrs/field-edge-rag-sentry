@@ -6,7 +6,7 @@ Prove—fast—that a single M‑series MacBook can run a **field‑edge Retriev
 - on‑device LoRA fine‑tuning
 - vector search (FAISS)
 - real‑time vision via CoreML
-- airtight evaluation that catches hallucinations before your interviewer does.
+- airtight evaluation that catches hallucinations.
 
 Think of it as a _micro‑demo_: minimal surface area, maximum evidence.
 
