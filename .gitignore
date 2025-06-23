@@ -200,3 +200,5 @@ third_party/
 # Misc
 error_logs/
 .repo_ignore
+models/
+yolo*
