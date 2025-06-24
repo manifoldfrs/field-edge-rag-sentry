@@ -10,12 +10,20 @@
 
 BREW_PKGS = cmake faiss libomp
 
-.PHONY: all deps llama test-faiss vision index clean test
+.PHONY: all deps llama test-faiss vision index generate lora clean test install-deps download-model
 
-all: llama index test-faiss vision
+all: install-deps llama index generate test-faiss vision
 
 deps:
 	brew install $(BREW_PKGS)
+
+# ---------------------------------------------------------------------------
+# Install Python dependencies with proper Metal compilation
+# ---------------------------------------------------------------------------
+install-deps: deps
+	pip install -r requirements.txt
+	CMAKE_ARGS="-DGGML_METAL=ON -DGGML_NATIVE=OFF -DCMAKE_OSX_ARCHITECTURES=arm64" \
+	pip install --upgrade --force-reinstall --no-cache-dir llama-cpp-python
 
 # ---------------------------------------------------------------------------
 # Build llama.cpp with Metal backend (≈15‑25 tok/s on M‑series GPU)
@@ -47,6 +55,32 @@ vision: deps src/vision_demo.py
 # ---------------------------------------------------------------------------
 index: deps src/build_index.py
 	python src/build_index.py
+
+# ---------------------------------------------------------------------------
+# Download Llama-2-7B-Chat Q4_0 model
+# ---------------------------------------------------------------------------
+download-model:
+	mkdir -p models
+	@if [ ! -f models/llama-2-7b-chat-q4_0.gguf ]; then \
+		echo "Downloading Llama-2-7B-Chat Q4_0 model..."; \
+		huggingface-cli download TheBloke/Llama-2-7B-Chat-GGUF llama-2-7b-chat.Q4_0.gguf --local-dir models/ && \
+		mv models/llama-2-7b-chat.Q4_0.gguf models/llama-2-7b-chat-q4_0.gguf || \
+		curl -L -o models/llama-2-7b-chat-q4_0.gguf "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_0.gguf"; \
+	else \
+		echo "Model already exists at models/llama-2-7b-chat-q4_0.gguf"; \
+	fi
+
+# ---------------------------------------------------------------------------
+# End-to-end answer generation (retrieval + llama.cpp)
+# ---------------------------------------------------------------------------
+generate: deps index download-model src/generate.py
+	python src/generate.py "Explain mission-type orders."
+
+# ---------------------------------------------------------------------------
+# LoRA fine‑tuning on synthetic Q‑A
+# ---------------------------------------------------------------------------
+lora: deps index src/finetune_lora.py
+	python src/finetune_lora.py
 
 # ---------------------------------------------------------------------------
 # Run all tests in the tests directory

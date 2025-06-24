@@ -1,7 +1,7 @@
 # field‑edge‑rag‑sentry Python dependencies
 
-# ——— Core LLM / RAG stack ———
-llama-cpp-python>=0.2.16        # Metal‑accelerated llama.cpp bindings
+# ——— Core LLM / RAG stack ———
+# Note: llama-cpp-python will be installed via Makefile with proper CMAKE_ARGS
 sentence-transformers>=2.4.0    # MiniLM embeddings
 faiss-cpu>=1.7.4                # Vector search (ARM wheel)
 torch>=2.2.2                    # MPS backend wheels ship on PyPI
@@ -28,3 +28,5 @@ PyPDF2>=3.0.1                   # PDF text extraction
 
 # ——— Testing / linting ———
 pytest>=8.2.0                   # Unit tests (+ Ragas harness)
+black
+isort
