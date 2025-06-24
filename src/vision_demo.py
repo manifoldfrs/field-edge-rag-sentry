@@ -14,10 +14,11 @@ Tested on macOS 14.5, M-series GPU. Achieves ~18-25 FPS on an M1 Pro.
 from __future__ import annotations
 
 import os
-import time
-import cv2
 import sys
+import time
 from pathlib import Path
+
+import cv2
 from ultralytics import YOLO
 
 MODELS_DIR = Path("models")
