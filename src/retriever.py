@@ -3,7 +3,7 @@ from __future__ import annotations
 import pickle
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
 import faiss
 import numpy as np
