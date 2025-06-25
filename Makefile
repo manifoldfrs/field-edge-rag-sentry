@@ -85,12 +85,12 @@ lora: deps index src/finetune_lora.py
 # ---------------------------------------------------------------------------
 # ZeroMQ RAG service
 # ---------------------------------------------------------------------------
-zmq-worker: deps index download-model src/rag_worker.py
-	python src/rag_worker.py
+rag-server: deps index download-model src/rag_server.py
+	python src/rag_server.py
 
 # Client helper
-zmq-query: deps src/zmq_query.py
-	python src/zmq_query.py "Explain mission-type orders."
+rag-client: deps src/rag_client.py
+	python src/rag_client.py "What is the purpose of the Army's mission-type orders?"
 
 # ---------------------------------------------------------------------------
 # Run all tests in the tests directory

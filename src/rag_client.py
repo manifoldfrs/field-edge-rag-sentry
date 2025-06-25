@@ -1,7 +1,5 @@
 """
-zmq_query.py
-------------
-Publish a question over ZeroMQ and wait for the corresponding answer.
+zmq_query.py --> A client that sends questions to the RAG worker and waits for the answer.
 """
 
 from __future__ import annotations

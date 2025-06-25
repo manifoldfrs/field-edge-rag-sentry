@@ -72,3 +72,7 @@ def main() -> None:
         answer = out["choices"][0]["text"].strip()
 
         pub.send_string(f"answer|{qid}|{answer}")
+
+
+if __name__ == "__main__":
+    main()
