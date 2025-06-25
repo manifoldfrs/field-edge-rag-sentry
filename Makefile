@@ -10,7 +10,7 @@
 
 BREW_PKGS = cmake faiss libomp
 
-.PHONY: all deps llama test-faiss vision index generate lora clean test install-deps download-model
+.PHONY: all deps llama test-faiss vision index generate lora zmq-worker zmq-query clean test install-deps download-model
 
 all: install-deps llama index generate test-faiss vision
 
@@ -81,6 +81,16 @@ generate: deps index download-model src/generate.py
 # ---------------------------------------------------------------------------
 lora: deps index src/finetune_lora.py
 	python src/finetune_lora.py
+
+# ---------------------------------------------------------------------------
+# ZeroMQ RAG service
+# ---------------------------------------------------------------------------
+zmq-worker: deps index download-model src/rag_worker.py
+	python src/rag_worker.py
+
+# Client helper
+zmq-query: deps src/zmq_query.py
+	python src/zmq_query.py "Explain mission-type orders."
 
 # ---------------------------------------------------------------------------
 # Run all tests in the tests directory
