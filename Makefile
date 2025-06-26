@@ -10,7 +10,7 @@
 
 BREW_PKGS = cmake faiss libomp
 
-.PHONY: all deps llama test-faiss vision index generate lora zmq-worker zmq-query clean test install-deps download-model
+.PHONY: all deps llama test-faiss vision index generate lora rag-server rag-client eval clean test install-deps download-model
 
 all: install-deps llama index generate test-faiss vision
 
@@ -49,6 +49,12 @@ test-faiss: deps src/faiss_smoke.py
 # ---------------------------------------------------------------------------
 vision: deps src/vision_demo.py
 	python src/vision_demo.py
+
+# ---------------------------------------------------------------------------
+# Vision + RAG bridge
+# ---------------------------------------------------------------------------
+vision-rag: deps index download-model src/vision_rag.py
+	python src/vision_rag.py
 
 # ---------------------------------------------------------------------------
 # Build FAISS index from doctrine PDFs
@@ -91,6 +97,12 @@ rag-server: deps index download-model src/rag_server.py
 # Client helper
 rag-client: deps src/rag_client.py
 	python src/rag_client.py "What is the purpose of the Army's mission-type orders?"
+
+# ---------------------------------------------------------------------------
+# Ragas evaluation over 25‑Q dev set
+# ---------------------------------------------------------------------------
+eval: deps index download-model src/eval_ragas.py
+	python src/eval_ragas.py
 
 # ---------------------------------------------------------------------------
 # Run all tests in the tests directory
